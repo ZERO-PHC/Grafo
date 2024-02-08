@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 var asciiChars = "@%#*+=-:. "
@@ -155,6 +157,28 @@ func saveImage(imageBytes []byte) (string, error) {
 	return imagePath, nil
 }
 
+// This function will map a brightness value to a color attribute
+func getBrightnessColorAttribute(brightness uint32) color.Attribute {
+	// Map the brightness to a range of 0-5, for example
+	colorRange := brightness * 5 / max
+
+	// Map this range to a specific color
+	switch colorRange {
+	case 0:
+		return color.FgHiBlack
+	case 1:
+		return color.FgRed
+	case 2:
+		return color.FgGreen
+	case 3:
+		return color.FgYellow
+	case 4:
+		return color.FgBlue
+	default:
+		return color.FgHiWhite
+	}
+}
+
 func loadImage(url string) {
 	println("Loading image...")
 	staticUrl := "https://cdn.discordapp.com/attachments/1167981493872758844/1205246473109766174/image_20240208113238.png?ex=65d7ac3f&is=65c5373f&hm=4edc50967cc620cb5cb5bb58b43bd69963a2550ebefe3256025d49a7ddf7e634&"
@@ -199,7 +223,15 @@ func loadImage(url string) {
 			}
 			char := density[floored]
 
-			fmt.Printf("%s", string(char))
+			// Calculate a color attribute based on the brightness
+			//colorAttr := color.Attribute(int(float64(sum) * 165 / 765))
+			colorAttr := getBrightnessColorAttribute(sum)
+
+			// Create a new color with the calculated attribute
+			c := color.New(colorAttr)
+
+			// Print the character with the color
+			c.Printf("%s", string(char))
 			f.Write([]byte(string(char)))
 
 		}
@@ -251,6 +283,6 @@ func imageToASCII(imagePath string) {
 }
 
 func toASCII(brightness uint32) rune {
-	index := brightness * uint32(len(asciiChars)) / 256
-	return rune(asciiChars[index])
+	index := brightness * uint32(len(density)) / 256
+	return rune(density[index])
 }
