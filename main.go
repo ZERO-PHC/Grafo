@@ -30,7 +30,9 @@ type ImageFormat int
 var imageURL string
 var imagePath string
 var title string
-var apiKey string
+var isKeySetted bool = false
+var finalGroup *huh.Group
+var bgColor string = ""
 
 const (
 	JPEG ImageFormat = iota + 1
@@ -68,79 +70,50 @@ func main() {
 
 	//	prompt := fmt.Sprintf("Image: A Pixel-Art Illustration of a CLI TertMINIMALISTIC Graffiti painted on it. The Graffiti says %s. Background Color: White. Graffiti Outline : %s. Colors: Vibrant Colors. Rules: Only display the Graffiti, DO NOT display anything else, DO NOT display hands!", "TITLE", "thick black")
 
+	finalGroup = huh.NewGroup(
+
+		huh.NewInput().
+			Value(&title).
+			Title("Title").
+			Placeholder("My Title").
+			Validate(func(s string) error {
+				if s == "" {
+					return errors.New("image name cannot be empty")
+				}
+				return nil
+			}),
+
+		huh.NewText().
+			Value(&bgColor).
+			Placeholder("Skyblue").
+			Title("Background Color").
+			//	Description("Any specific requirements?").
+			CharLimit(400).
+			Lines(5),
+	)
+
 	// Should we run in accessible mode?
 	accessible, _ := strconv.ParseBool(os.Getenv("ACCESSIBLE"))
 
 	form := huh.NewForm(
 		huh.NewGroup(huh.NewNote().
-			Title("Image Generator").
-			Description("Welcome to _Image Generator™_.\n\nHow may we assist you?")),
+			Title("GRAFO").
+			Description("Welcome to Grafo the best CLI title Generator in the universe!")),
 
-		// Choose an image format.
-		//huh.NewGroup(
-		//huh.NewSelect[ImageFormat]().
-		//	Options(
-		//		huh.NewOption("JPEG", JPEG).Selected(true),
-		//		huh.NewOption("PNG", PNG),
-		//		huh.NewOption("GIF", GIF),
-		//	).
-		//	Title("Choose your image format").
-		//	Description("We support JPEG, PNG, and GIF formats.").
-		//	Value(&order.Image.Format),
-
-		//	huh.NewMultiSelect[string]().
-		//		Title("Dimensions").
-		//		Description("Choose the width and height.").
-		//		Options(
-		//			huh.NewOption("800x600", "800x600").Selected(true),
-		//			huh.NewOption("1024x768", "1024x768"),
-		//			huh.NewOption("1280x720", "1280x720"),
-		//			huh.NewOption("1920x1080", "1920x1080"),
-		//		).
-		//Validate(func(t []string) error {
-		//	if len(t) != 1 {
-		//		return fmt.Errorf("please select width and height")
-		//		}
-		//	return nil
-		//	}).
-		//	Value(&order.Image.Dimensions).
-		//	Filterable(true).
-		//	Limit(2),
-		//),
-
-		// Gather final details for the order.
 		huh.NewGroup(
-			huh.NewInput().Value(&apiKey).
-				Title("API Key").
-				Placeholder("Your API key").
-				Validate(func(s string) error {
-					if s == "" {
-						return errors.New("API key cannot be empty")
+			huh.NewConfirm().
+				Title("Is your Open AI API key setted in your environment?").
+				Value(&isKeySetted).
+				Validate(func(b bool) error {
+
+					if !b {
+						//os.Exit(1)
+						return errors.New("Please set your API key as OPENAI_API_KEY in your environment and the select 'Yes' to continue")
 					}
 					return nil
-				}).
-				Description("Your API key is required to generate the image."),
+				})),
 
-			huh.NewInput().
-				Value(&title).
-				Title("Title").
-				Placeholder("My Title").
-				Validate(func(s string) error {
-					if s == "" {
-						return errors.New("image name cannot be empty")
-					}
-					return nil
-				}).
-				Description("For your reference."),
-
-			huh.NewText().
-				Value(&order.Instructions).
-				Placeholder("Please use vibrant colors").
-				Title("Special Instructions").
-				Description("Any specific requirements?").
-				CharLimit(400).
-				Lines(5),
-		),
+		finalGroup,
 	).WithAccessible(accessible)
 
 	err := form.Run()
@@ -150,39 +123,40 @@ func main() {
 		os.Exit(1)
 	}
 
-	// sprint f var called prompt
-
 	initImageGen := func() {
 		fmt.Println(imagePath)
-		//imageToASCII(imagePath)
-		prompt := fmt.Sprintf("Image: A Pixel-Art Illustration of a CLI BOLD Title with a border to generate a 3D effect. The Title says %s. Background Color: Skyblue. Title Outline : %s. Colors: The color of the Title is highlighted. Rules: Only display the Title, DO NOT display anything else!", title, "thick black")
+		prompt := fmt.Sprintf("Image: A Minimalistic Title"+
+			"Painting Style: Graffiti "+
+			"Effects:  3D effect. "+
+			"Title Text %s. "+
+			"Paddings: 20px. "+
+			"Alignment: Center. "+
+			"FontSize: 20px. "+
+			"FontWeight: Bold. "+
+			// uppercase?
+			"Background Color: %s."+
+			"Outline : %s."+
+			"Colors: The color of the Title is highlighted."+
+			"Rules: Only display the Title, DO NOT display anything else!",
+			title, bgColor, "thin black")
 		imagePath = imgGen.GenerateImg(prompt, imagePath, imageURL)
-
 	}
 
-	_ = spinner.New().Title("Generating your image...").Accessible(accessible).Action(initImageGen).Run()
+	_ = spinner.New().Title("Generating your Title...").Accessible(accessible).Action(initImageGen).Run()
 
-	// Print order summary.
 	{
 		var sb strings.Builder
 		keyword := func(s string) string {
 			return lipgloss.NewStyle().Foreground(lipgloss.Color("212")).Render(s)
 		}
 		fmt.Fprintf(&sb,
-			"%s\n\nOne %s image of dimensions %s named %s.",
-			lipgloss.NewStyle().Bold(true).Render(imagePath),
+			"%s\n\n %s  %s  %s.",
+			keyword("Your Title has been generated!"),
 
-			keyword(order.Image.Format.String()),
+			lipgloss.NewStyle().Bold(true).Render(imagePath),
 			keyword(xstrings.EnglishJoin(order.Image.Dimensions, true)),
 			keyword(order.Image.Name),
 		)
-
-		//print image url
-
-		//printapi key
-		//fmt.Fprintf(&sb, "\n\nAPI Key: %s", keyword(apiKey))
-
-		fmt.Fprintf(&sb, "\n\nThanks for the interaction!")
 
 		fmt.Println(
 			lipgloss.NewStyle().
@@ -193,8 +167,4 @@ func main() {
 				Render(sb.String()),
 		)
 	}
-}
-
-func scaleDown(c uint32, max uint32) uint8 {
-	return uint8((c*255 + max/2) / max)
 }

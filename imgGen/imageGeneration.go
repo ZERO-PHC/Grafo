@@ -23,6 +23,7 @@ const max = 765
 func GenerateImg(prompt string, imagePath string, imageURL string) string {
 	var _ = "1792x1024"
 	var _ = "1024x1792"
+	//imageURL = "https://oaidalleapiprodscus.blob.core.windows.net/private/org-yMUJFRLsbHiDT7L6B3xxdyO7/user-g8jvMhQIkeeR5EXwNu0cL9nD/img-zbhqqxJYDjVGewk42ibVV9Nx.png?st=2024-02-09T16%3A58%3A02Z&se=2024-02-09T18%3A58%3A02Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-02-08T23%3A10%3A37Z&ske=2024-02-09T23%3A10%3A37Z&sks=b&skv=2021-08-06&sig=qQCUhc1Rw8g/08okKbQ5xW0VgI1/9aQaEkRHgx9%2B/2E%3D"
 
 	//fmt.Println(escena_res)
 	//fmt.Println(personaje_res)
@@ -74,8 +75,7 @@ func GenerateImg(prompt string, imagePath string, imageURL string) string {
 		log.Fatalf("%v", err)
 	}
 
-	println(imageURL)
-
+	//println(imageURL)
 	loadImage(imageURL)
 
 	return imagePath

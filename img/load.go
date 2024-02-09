@@ -32,7 +32,7 @@ func Load(url string) (image.Image, error) {
 	height := bounds.Dy()
 
 	newWidth := int(float64(width) / 9)
-	newHeight := int(float64(height) / 12)
+	newHeight := int(float64(height) / 32)
 
 	newImg := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
 	// Loop over the height of the new image
@@ -42,7 +42,7 @@ func Load(url string) (image.Image, error) {
 			// Set the pixel at the current x, y coordinate of the new image
 			// to the pixel at the corresponding x*3, y*3 coordinate of the original image
 			// This effectively scales down the image by a factor of 3
-			newImg.Set(x, y, img.At(x*9, y*12))
+			newImg.Set(x, y, img.At(x*9, y*32))
 		}
 	}
 
