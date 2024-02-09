@@ -27,60 +27,58 @@ func GenerateImg(prompt string, imagePath string, imageURL string) string {
 	//fmt.Println(escena_res)
 	//fmt.Println(personaje_res)
 
-	/*	data := map[string]interface{}{
-			"model":  "dall-e-3",
-			"prompt": prompt,
-			"n":      1, // only
-			//	"size":            "256x256",
-			"style":           "natural",
-			"response_format": "url",
-			//"quality":         "hd",
-		}
+	data := map[string]interface{}{
+		"model":  "dall-e-3",
+		"prompt": prompt,
+		"n":      1, // only
+		//	"size":            "256x256",
+		"style":           "natural",
+		"response_format": "url",
+		//"quality":         "hd",
+	}
 
-		jsonData, err := marshalData(data)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
+	jsonData, err := marshalData(data)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-		req, err := createRequest(jsonData)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
+	req, err := createRequest(jsonData)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-		resp, err := sendRequest(req)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
+	resp, err := sendRequest(req)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-		defer resp.Body.Close()
+	defer resp.Body.Close()
 
-		body, err := readResponseBody(resp)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
+	body, err := readResponseBody(resp)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-		imageURL, err = unmarshalResponse(body)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
+	imageURL, err = unmarshalResponse(body)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-		imageBytes, err := downloadImage(imageURL)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
+	imageBytes, err := downloadImage(imageURL)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
-		imagePath, err = saveImage(imageBytes)
-		if err != nil {
-			log.Fatalf("%v", err)
-		}
-
-	*/
+	imagePath, err = saveImage(imageBytes)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
 
 	println(imageURL)
 
 	loadImage(imageURL)
 
-	return "imagePath"
+	return imagePath
 }
 
 func marshalData(data map[string]interface{}) ([]byte, error) {
@@ -181,16 +179,14 @@ func getBrightnessColorAttribute(brightness uint32) color.Attribute {
 
 func loadImage(url string) {
 	println("Loading image...")
-	staticUrl := "https://cdn.discordapp.com/attachments/1167981493872758844/1205246473109766174/image_20240208113238.png?ex=65d7ac3f&is=65c5373f&hm=4edc50967cc620cb5cb5bb58b43bd69963a2550ebefe3256025d49a7ddf7e634&"
+	//staticUrl := "https://cdn.discordapp.com/attachments/1167981493872758844/1205246473109766174/image_20240208113238.png?ex=65d7ac3f&is=65c5373f&hm=4edc50967cc620cb5cb5bb58b43bd69963a2550ebefe3256025d49a7ddf7e634&"
 
 	//img, err := img.Load(url)
-	img, err := img.Load(staticUrl)
+	img, err := img.Load(url)
 
 	if err != nil {
 		panic(err)
 	}
-
-	println("Image loaded")
 
 	f, err := os.Create("./result.txt")
 

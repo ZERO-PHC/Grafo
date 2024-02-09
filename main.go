@@ -30,6 +30,7 @@ type ImageFormat int
 
 var imageURL string
 var imagePath string
+var title string
 var apiKey string
 
 const (
@@ -66,8 +67,7 @@ func main() {
 	var image Image
 	var order = Order{Image: image}
 
-	prompt := fmt.Sprintf("Image: A Digital Illustration of the final result of a  Graffiti that says %s. Background Color: White. Graffiti Outline : %s. Colors: Vibrant Colors. Rules: Only display the Graffiti, DO NOT display anything else, DO NOT display hands!", "GRAFFITI", "thick black")
-	imagePath = imgGen.GenerateImg(prompt, imagePath, imageURL)
+	//	prompt := fmt.Sprintf("Image: A Pixel-Art Illustration of a CLI TertMINIMALISTIC Graffiti painted on it. The Graffiti says %s. Background Color: White. Graffiti Outline : %s. Colors: Vibrant Colors. Rules: Only display the Graffiti, DO NOT display anything else, DO NOT display hands!", "TITLE", "thick black")
 
 	// Should we run in accessible mode?
 	accessible, _ := strconv.ParseBool(os.Getenv("ACCESSIBLE"))
@@ -123,9 +123,9 @@ func main() {
 				Description("Your API key is required to generate the image."),
 
 			huh.NewInput().
-				Value(&order.Image.Name).
-				Title("What's the image name?").
-				Placeholder("my_image").
+				Value(&title).
+				Title("Title").
+				Placeholder("My Title").
 				Validate(func(s string) error {
 					if s == "" {
 						return errors.New("image name cannot be empty")
@@ -156,6 +156,8 @@ func main() {
 	initImageGen := func() {
 		fmt.Println(imagePath)
 		//imageToASCII(imagePath)
+		prompt := fmt.Sprintf("Image: A Pixel-Art Illustration of a CLI BOLD Title with a border to generate a 3D effect. The Title says %s. Background Color: Skyblue. Title Outline : %s. Colors: The color of the Title is highlighted. Rules: Only display the Title, DO NOT display anything else!", title, "thick black")
+		imagePath = imgGen.GenerateImg(prompt, imagePath, imageURL)
 
 	}
 
