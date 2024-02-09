@@ -20,7 +20,6 @@ import (
 // preview in ASCII:
 
 // TODO getOsEnv
-// const OPENAI_API_KEY = "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"
 
 //implementAIR
 
