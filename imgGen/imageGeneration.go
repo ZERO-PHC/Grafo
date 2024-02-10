@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"graffiti/img"
+	"grafo/img"
 	"image"
 	"io"
 	"log"

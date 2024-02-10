@@ -1,4 +1,4 @@
-module graffiti
+module grafo
 
 go 1.20
 

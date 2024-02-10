@@ -16,3 +16,26 @@ Follow these steps to use Grafo:
 5. Wait for the title generation process to complete.
 
 The generated title will be shown in the terminal and also saved as an image.
+
+## Contributing
+
+We welcome your contributions! If you have a feature suggestion or bug report, feel free to open a PR or an issue.
+
+## Future Enhancements
+
+We're planning to add more features, including:
+- More customization options for the title, such as font, size, effects, etc.
+- Integration with other image generation APIs
+- Improved error handling and user input validation
+- Option to save the title in different image formats
+
+## Dependencies
+
+This project relies on the following packages:
+- Huh for user input
+- Dall-e image generator for generating images
+- Lipgloss for styling terminal output
+
+## Notes 
+
+Before running the program, please ensure to set your OpenAI API key in your environment.

@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"graffiti/imgGen"
+	"grafo/imgGen"
 	_ "image/jpeg"
 	_ "image/png"
 	"os"
