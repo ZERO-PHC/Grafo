@@ -1,6 +1,6 @@
 # Grafo: CLI Title Generator
 
-Grafo is a command-line interface (CLI) title generator developed in Go. It utilizes the Huh package for user input and the Dall-e image generator to create unique title images. This tool provides a fun and innovative way to generate stylish, personalized titles for your projects or presentations.
+Grafo is a command-line interface (CLI) ASCII art title generator. It utilizes the Huh package for user input and the Dall-e image generator to create unique title images. This tool provides a fun and innovative way to generate stylish, personalized titles for your projects or presentations.
 
 ![Grafo CLI Title Generator](./grafo-img.png)
 
