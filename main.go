@@ -14,18 +14,24 @@ import (
 	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/huh/spinner"
 	"github.com/charmbracelet/lipgloss"
-	xstrings "github.com/charmbracelet/x/exp/strings"
 )
 
-// preview in ASCII:
+//TODO auto breakliner
 
-// TODO getOsEnv
-
-//implementAIR
-
-//Ask is the user has an API key setted up in the environment
-
-type ImageFormat int
+var asciiTitle = ":!!!!!!!!6!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!7!\n" +
+	":!!!!!!!!5!!!!!!!!!!!!!!!@#W#######6!!!!!!a###########W!!!!ÃÃ###Ã##W!!!!!!!!1Ã3###84671!!!!!!!0@59W56!!!!!!!8!\n" +
+	":!!!!!!!!6!!!!!!!!!!Ã###100000000000##3ÃÃ@#10000000000000W#ÃÃ##100000#W!!ÃÃÃÃ##000000000000#####000000000#W?!!$!\n" +
+	":!!!!!!!!6!!!!!!!ÃÃ##100000000000000?##ÃÃ#10000000000000002###00000000##ÃÃÃÃ##0000000000000##00000000000000Ã#!W!\n" +
+	":!!!!!!!!4!!!!$ÃÃ##10000000@####000@##ÃÃÃ#900000##Ã##000000##0000600000##ÃÃÃ#1000Ã##WÃÃÃÃ##00000######900000Ã#!\n" +
+	":!!!!!!!!3!!!ÃÃÃ@#1000000##ÃÃÃÃÃÃÃ#####WÃ##00000Ã##000000?##0000Ã##0000?##ÃÃ#00000000#ÃÃ#10000##ÃÃÃÃÃÃ#W00000#W!\n" +
+	":!!!!!!!!4a!ÃÃÃÃ##000000Ã#0$ÃÃ##20000001##W00000000000####$0000#600000005#@#W000000###Ã#10000Ã#a99ÃÃÃÃ#W00000WÃ!\n" +
+	":!!!!!!!!3a$ÃÃÃÃ##0000006##Ã##00000000000Ã#0000000000000Ã##10000000000000###1000Ã#ÃÃÃÃÃ#000000##9ÃÃÃ$#100000##@!\n" +
+	":!!!!!!!!3?$WÃÃÃÃ##0000000Ã####0W#6000000Ã##00000Ã#000000000#####ÃÃÃ##0000Ã#0000##ÃÃÃÃÃ##00000000110000000#?!@!\n" +
+	":!!!!!!!!1a$$ÃÃÃÃÃ##00000000000000000000###000000####8000000Ã#ÃÃÃÃÃÃ#W0000Ã####W9ÃÃÃÃÃÃÃ#00000000000000##!!!!@!\n" +
+	":!!!!!!!!2!!$$9ÃÃÃÃÃ##600000000000000###ÃÃÃ#W00000Ã#ÃÃÃÃ#####?!$$ÃÃÃÃÃ#W000##!!!!$$ÃÃÃÃÃÃÃ##W##W#####0!!!!!!!@!\n" +
+	":!!!!!!!!1!!!a$$$ÃÃÃÃÃÃÃ###########Ã1$$ÃÃÃÃÃÃ####WÃ$$ÃÃÃÃ1!!!!!!9$9ÃÃÃÃÃÃÃ!!!!!!!!!9$$$ÃÃÃÃÃÃÃÃÃÃ!!!!!!!!!!!!!\n" +
+	":!!!!!!!!1a!!!!!?$$$$ÃÃÃÃÃÃÃÃÃÃÃ$!!!!!?$$$ÃÃÃÃ#!!!!!!!!!!!!!!!!!!!2$$9!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Ã!\n" +
+	":!!!!!!!!0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Ã!\n"
 
 var imageURL string
 var imagePath string
@@ -34,41 +40,7 @@ var isKeySetted bool = false
 var finalGroup *huh.Group
 var bgColor string = ""
 
-const (
-	JPEG ImageFormat = iota + 1
-	PNG
-	GIF
-)
-
-func (f ImageFormat) String() string {
-	switch f {
-	case JPEG:
-		return "JPEG "
-	case PNG:
-		return "PNG "
-	case GIF:
-		return "GIF "
-	default:
-		return ""
-	}
-}
-
-type Image struct {
-	Format     ImageFormat
-	Dimensions []string
-	Name       string
-}
-
-type Order struct {
-	Image        Image
-	Instructions string
-}
-
 func main() {
-	var image Image
-	var order = Order{Image: image}
-
-	//	prompt := fmt.Sprintf("Image: A Pixel-Art Illustration of a CLI TertMINIMALISTIC Graffiti painted on it. The Graffiti says %s. Background Color: White. Graffiti Outline : %s. Colors: Vibrant Colors. Rules: Only display the Graffiti, DO NOT display anything else, DO NOT display hands!", "TITLE", "thick black")
 
 	finalGroup = huh.NewGroup(
 
@@ -78,7 +50,7 @@ func main() {
 			Placeholder("My Title").
 			Validate(func(s string) error {
 				if s == "" {
-					return errors.New("image name cannot be empty")
+					return errors.New("Title name cannot be empty")
 				}
 				return nil
 			}),
@@ -150,12 +122,10 @@ func main() {
 			return lipgloss.NewStyle().Foreground(lipgloss.Color("212")).Render(s)
 		}
 		fmt.Fprintf(&sb,
-			"%s\n\n %s  %s  %s.",
+			"%s\n\n %s .",
 			keyword("Your Title has been generated!"),
 
 			lipgloss.NewStyle().Bold(true).Render(imagePath),
-			keyword(xstrings.EnglishJoin(order.Image.Dimensions, true)),
-			keyword(order.Image.Name),
 		)
 
 		fmt.Println(
