@@ -8,11 +8,10 @@ Grafo is a command-line interface (CLI) ASCII art title generator. It utilizes t
 ## Usage
 
 Follow these steps to use Grafo:
-
-1. Execute the program: `go run main.go`
-2. Input your desired title when asked.
-3. Select a background color for your title.
-4. Verify that your OpenAI API key is configured in your environment.
+1. Verify that your OpenAI API key is configured in your environment.
+2. Execute the program: `go run main.go`
+3. Input your desired title when asked.
+4. Select a background color for your title.
 5. Wait for the title generation process to complete.
 
 The generated title will be shown in the terminal and also saved as an image.
